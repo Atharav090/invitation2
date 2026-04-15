@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wedding Invitation – Pranav & Aishwarya</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Josefin+Sans:wght@200;300;400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+  <style>
+    /* ===== CSS VARIABLES ===== */
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8C97A;
+      --gold-dark: #9B7835;
+      --ivory: #FAF6EE;
+      --ivory-dark: #F0E9D8;
+      --cream: #F5EDD8;
+      --charcoal: #2C2416;
+      --charcoal-light: #4A3F2C;
+      --maroon: #6B1E2E;
+      --deep-red: #8B0000;
+      --rust: #9B4D2E;
+      --forest: #1E3A2F;
+      --font-display: 'Cormorant Garamond', serif;
+      --font-heading: 'Playfair Display', serif;
+      --font-body: 'Josefin Sans', sans-serif;
+    }
+
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--ivory);
+      color: var(--charcoal);
+      overflow-x: hidden;
+    }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--ivory-dark); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+    /* ===== MANDALA OVERLAY SVG ===== */
+    .mandala-watermark {
+      position: fixed;
+      opacity: 0.04;
+      pointer-events: none;
+      z-index: 0;
+      width: 700px;
+      height: 700px;
+    }
+    .mandala-watermark.top-left { top: -150px; left: -150px; }
+    .mandala-watermark.bottom-right { bottom: -150px; right: -150px; transform: rotate(45deg); }
+
+    /* ===== FLOATING PETALS ===== */
+    .petal-container {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .petal {
+      position: absolute;
+      top: -20px;
+      width: 8px; height: 14px;
+      background: linear-gradient(135deg, rgba(201,168,76,0.4), rgba(139,0,0,0.2));
+      border-radius: 50% 0 50% 0;
+      animation: petalFall linear infinite;
+    }
+    @keyframes petalFall {
+      0% { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 0.5; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* ===== GOLD DIVIDER ===== */
+    .gold-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1.5rem auto;
+      width: fit-content;
+    }
+    .gold-divider::before, .gold-divider::after {
+      content: '';
+      display: block;
+      width: 60px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold));
+    }
+    .gold-divider::after { background: linear-gradient(90deg, var(--gold), transparent); }
+    .gold-divider .diamond {
+      width: 8px; height: 8px;
+      background: var(--gold);
+      transform: rotate(45deg);
+    }
+
+    /* ===== ENTRY SCREEN ===== */
+    #entry-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      transition: transform 1.4s cubic-bezier(0.77,0,0.175,1), opacity 0.6s ease;
+    }
+    #entry-screen.open {
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .entry-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(44,36,22,0.82) 0%, rgba(107,30,46,0.7) 50%, rgba(44,36,22,0.9) 100%),
+        url('https://images.unsplash.com/photo-1519741497674-611481863552?w=1400&q=80') center/cover no-repeat;
+    }
+
+    .entry-pattern {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(201,168,76,0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(201,168,76,0.06) 0%, transparent 50%);
+    }
+
+    /* Paisley border corners */
+    .entry-corner {
+      position: absolute;
+      width: 120px; height: 120px;
+      opacity: 0.5;
+    }
+    .entry-corner.tl { top: 20px; left: 20px; }
+    .entry-corner.tr { top: 20px; right: 20px; transform: scaleX(-1); }
+    .entry-corner.bl { bottom: 20px; left: 20px; transform: scaleY(-1); }
+    .entry-corner.br { bottom: 20px; right: 20px; transform: scale(-1,-1); }
+
+    .entry-content { position: relative; z-index: 2; padding: 2rem; max-width: 600px; }
+    .entry {
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      color: var(--gold-light);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      opacity: 0.8;
+      animation: fadeSlideDown 1s ease 0.3s both;
+    }
+    .entry-invite-text {
+      font-family: var(--font-body);
+      font-size: clamp(0.7rem, 1.5vw, 0.85rem);
+      color: rgba(255,255,255,0.65);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      animation: fadeSlideDown 1s ease 0.5s both;
+    }
+    .entry-names {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 8vw, 5.5rem);
+      font-weight: 300;
+      color: #fff;
+      line-height: 1.1;
+      animation: fadeSlideDown 1s ease 0.7s both;
+    }
+    .entry-names em {
+      font-style: normal;
+      color: var(--gold-light);
+    }
+    .entry-amp {
+      display: block;
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      color: var(--gold);
+      margin: 0.3rem 0;
+      animation: fadeSlideDown 1s ease 0.9s both;
+    }
+    .entry-tagline {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      color: rgba(255,255,255,0.55);
+      margin: 1.5rem 0 2.5rem;
+      animation: fadeSlideDown 1s ease 1.1s both;
+    }
+
+    .entry-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 2.5rem;
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold-light);
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.4s ease;
+      animation: fadeSlideDown 1s ease 1.3s both;
+    }
+    .entry-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+      transform: translateX(-101%);
+      transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    }
+    .entry-btn:hover::before { transform: translateX(0); }
+    .entry-btn:hover { color: var(--charcoal); }
+    .entry-btn span { position: relative; z-index: 1; }
+
+    /* Shimmer line at bottom of entry */
+    .entry-shimmer {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      animation: shimmerSlide 3s ease infinite;
+    }
+    @keyframes shimmerSlide {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    @keyframes fadeSlideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    #main-content {
+      opacity: 0;
+      transition: opacity 1s ease 0.3s;
+    }
+    #main-content.visible { opacity: 1; }
+
+    /* ===== SECTION BASE ===== */
+    section {
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    /* ===== HEADER / NAV ===== */
+    .site-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 500;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(250,246,238,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+      transform: translateY(-100%);
+      transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
+    }
+    .site-nav.visible { transform: translateY(0); }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: var(--gold-dark);
+      font-style: italic;
+      letter-spacing: 0.05em;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--charcoal-light);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ===== HERO SECTION ===== */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 5rem;
+      background:
+        radial-gradient(circle at 50% 10%, rgba(255,255,255,0.6), transparent 24%),
+        linear-gradient(180deg, rgba(250,246,238,0.98) 0%, rgba(245,237,216,0.92) 100%);
+    }
+
+    /* Decorative arched frame */
+    .hero-arch {
+      position: relative;
+      width: clamp(420px, 92vw, 980px);
+      margin: 0 auto 2.5rem;
+    }
+    .hero-arch-frame {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      min-height: 360px;
+      border: 2px solid var(--gold);
+      border-radius: 42px;
+      position: relative;
+      overflow: hidden;
+      background: rgba(255,255,255,0.18);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2);
+      backdrop-filter: blur(4px);
+    }
+    .hero-arch-inner {
+      position: absolute;
+      inset: 8px;
+      border: 1px solid rgba(201,168,76,0.4);
+      border-radius: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: rgba(0,0,0,0.04);
+    }
+    .hero-arch-ornament {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 28px; height: 28px;
+      background: var(--ivory);
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+    }
+    .hero-arch-ornament::after {
+      content: '✦';
+      color: var(--gold);
+    }
+    .hero-couple-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 0;
+      filter: sepia(10%) saturate(0.95);
+      transition: transform 0.6s ease, filter 0.6s ease;
+      transform: scale(1.1);
+    }
+
+    /* Arch bottom decorative pillars */
+    .hero-arch-base {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      width: calc(100% + 40px);
+      margin: 0 -20px;
+    }
+    .hero-arch-pillar {
+      width: 20px;
+      height: 60px;
+      background: linear-gradient(180deg, var(--gold-light), var(--gold-dark));
+      position: relative;
+    }
+    .hero-arch-pillar::before, .hero-arch-pillar::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px; height: 10px;
+      background: var(--gold);
+    }
+    .hero-arch-pillar::before { top: 0; }
+    .hero-arch-pillar::after { bottom: 0; }
+
+    .hero-shubh {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      color: var(--gold-dark);
+      letter-spacing: 0.15em;
+      margin-bottom: 0.5rem;
+    }
+    .hero-subtitle {
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--charcoal-light);
+      opacity: 0.7;
+      margin-bottom: 1rem;
+    }
+    .hero-names {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      font-weight: 300;
+      line-height: 0.95;
+      color: var(--charcoal);
+      margin-bottom: 0.5rem;
+    }
+    .hero-names .bride { color: var(--maroon); }
+    .hero-names .amp {
+      display: block;
+      font-size: 0.45em;
+      color: var(--gold);
+      font-style: normal;
+      margin: 0.2em 0;
+    }
+    .hero-names .groom { color: var(--charcoal); }
+    .hero-quote {
+      font-family: var(--font-display);
+      font-style: normal;
+      font-size: clamp(1rem, 2.2vw, 1.3rem);
+      color: var(--charcoal-light);
+      opacity: 0.75;
+      max-width: 480px;
+      margin: 1.5rem auto 0;
+      line-height: 1.7;
+    }
+
+    /* ===== WEDDING DETAILS ===== */
+    .section-label {
+      text-align: center;
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    .section-title {
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 300;
+      margin-bottom: 0.5rem;
+    }
+    .section-title.light { color: #fff; }
+    .section-title.dark { color: var(--charcoal); }
+
+    /* ===== WEDDING DETAILS ===== */
+    #details {
+      padding: 6rem 2rem;
+      background: var(--ivory);
+      position: relative;
+    }
+    .details-container {
+      max-width: 900px;
+      margin: 4rem auto 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .detail-card {
+      background: var(--ivory-dark);
+      border: 1px solid rgba(201,168,76,0.25);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      position: relative;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .detail-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 60px rgba(201,168,76,0.12);
+    }
+    .detail-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 40px; height: 2px;
+      background: var(--gold);
+    }
+    .detail-icon {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .detail-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      margin-bottom: 0.4rem;
+    }
+    .detail-value {
+      font-family: var(--font-display);
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      color: var(--charcoal);
+      line-height: 1.4;
+    }
+    .detail-sub {
+      font-size: 0.7rem;
+      color: var(--charcoal-light);
+      opacity: 0.6;
+      margin-top: 0.3rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* ===== COUNTDOWN ===== */
+    #countdown {
+      padding: 6rem 2rem;
+      background: linear-gradient(135deg, var(--maroon) 0%, #2C1010 40%, var(--charcoal) 100%);
+      position: relative;
+      text-align: center;
+      overflow: hidden;
+    }
+    .countdown-geo {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px; height: 600px;
+      border: 1px solid rgba(201,168,76,0.06);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .countdown-geo::before, .countdown-geo::after {
+      content: '';
+      position: absolute;
+      inset: 30px;
+      border: 1px solid rgba(201,168,76,0.05);
+      border-radius: 50%;
+    }
+    .countdown-geo::after { inset: 60px; }
+
+    .countdown-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: rgba(201,168,76,0.6);
+      margin-bottom: 0.75rem;
+    }
+    .countdown-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4.5vw, 3rem);
+      font-weight: 300;
+      font-style: italic;
+      color: #fff;
+      margin-bottom: 3rem;
+    }
+    .countdown-grid {
+      display: flex;
+      justify-content: center;
+      gap: clamp(1rem, 4vw, 3rem);
+      flex-wrap: wrap;
+    }
+    .countdown-unit {
+      text-align: center;
+    }
+    .countdown-number {
+      display: block;
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 10vw, 6rem);
+      font-weight: 300;
+      color: var(--gold-light);
+      line-height: 1;
+      min-width: clamp(70px, 15vw, 120px);
+      position: relative;
+    }
+    .countdown-number::after {
+      content: '';
+      display: block;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.4), transparent);
+      margin-top: 0.5rem;
+    }
+    .countdown-unit-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-top: 0.5rem;
+    }
+    .countdown-sep {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 6vw, 4rem);
+      color: rgba(201,168,76,0.3);
+      align-self: flex-start;
+      padding-top: 0.1em;
+      line-height: 1;
+    }
+
+    /* ===== LOCATION ===== */
+    #location {
+      padding: 6rem 2rem;
+      background: var(--charcoal);
+    }
+    .location-container {
+      max-width: 600px;
+      margin: 4rem auto 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .location-info {}
+    .location-address {
+      font-family: var(--font-display);
+      font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+      color: #fff;
+      line-height: 1.5;
+      margin: 1.5rem 0;
+      font-style: italic;
+    }
+    .qr-block {
+      margin-top: 2rem;
+      text-align: center;
+    }
+    .qr-code {
+      width: min(220px, 100%);
+      max-width: 240px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.16);
+      padding: 0.6rem;
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 18px 35px rgba(0,0,0,0.12);
+    }
+    .qr-note {
+      margin-top: 0.75rem;
+      color: rgba(255,255,255,0.75);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+    }
+    .location-detail-row {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      justify-content: center;
+    }
+    .location-detail-row span:first-child { color: var(--gold); }
+    .direction-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 1.5rem;
+      padding: 1rem 2rem;
+      background: var(--gold);
+      color: var(--charcoal);
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .direction-btn:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+    }
+
+    /* ===== MUSIC PLAYER ===== */
+    #music-btn {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 600;
+      width: 52px; height: 52px;
+      background: var(--charcoal);
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--gold);
+      font-size: 1.1rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+    #music-btn:hover {
+      background: var(--gold);
+      color: var(--charcoal);
+      transform: scale(1.1);
+    }
+    #music-btn.shown { display: flex; }
+    .music-pulse {
+      position: absolute;
+      inset: -4px;
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 50%;
+      animation: musicPulse 2s ease infinite;
+    }
+    .music-pulse.delay { animation-delay: 1s; }
+    @keyframes musicPulse {
+      0% { transform: scale(1); opacity: 0.6; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+
+    /* ===== CLOSING ===== */
+    #closing {
+      padding: 7rem 2rem;
+      background: var(--charcoal);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .closing-mandala {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.04;
+      pointer-events: none;
+      width: 500px; height: 500px;
+    }
+    .closing-message {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 300;
+      color: #fff;
+      line-height: 1.4;
+      margin-bottom: 1rem;
+    }
+    .closing-message em { color: var(--gold-light); font-style: italic; }
+    .closing-sub {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 3rem;
+    }
+    .closing-families {
+      display: flex;
+      justify-content: center;
+      gap: 5rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    .family-block { text-align: center; }
+    .family-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    .family-name {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      color: rgba(255,255,255,0.8);
+      font-style: italic;
+    }
+    .family-desc {
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.35);
+      margin-top: 0.2rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* Footer */
+    .footer {
+      background: #1A1409;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .footer p {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: rgba(201,168,76,0.3);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .details-container { grid-template-columns: 1fr; max-width: 380px; }
+      .location-container { grid-template-columns: 1fr; }
+      .map-frame { height: 250px; }
+      .nav-links { display: none; }
+      .site-nav { justify-content: center; }
+      .closing-families { gap: 2.5rem; }
+      .hero-arch {
+        width: min(96vw, 100%);
+        margin-bottom: 1.75rem;
+      }
+      .hero-arch-frame {
+        min-height: 260px;
+      }
+      #hero { background-size: contain; background-position: top center; }
+    }
+
+    @media (max-width: 480px) {
+      .countdown-sep { display: none; }
+    }
+
+    /* ===== AOS OVERRIDE ===== */
+    [data-aos] { pointer-events: none; }
+    [data-aos].aos-animate { pointer-events: auto; }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Petals -->
+  <div class="petal-container" id="petals"></div>
+
+  <!-- Mandala Watermarks -->
+  <svg class="mandala-watermark top-left" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="100" cy="100" r="90" stroke="#C9A84C" stroke-width="0.5"/>
+    <circle cx="100" cy="100" r="70" stroke="#C9A84C" stroke-width="0.5"/>
+    <circle cx="100" cy="100" r="50" stroke="#C9A84C" stroke-width="0.5"/>
+    <circle cx="100" cy="100" r="30" stroke="#C9A84C" stroke-width="0.5"/>
+    <line x1="10" y1="100" x2="190" y2="100" stroke="#C9A84C" stroke-width="0.5"/>
+    <line x1="100" y1="10" x2="100" y2="190" stroke="#C9A84C" stroke-width="0.5"/>
+    <line x1="36" y1="36" x2="164" y2="164" stroke="#C9A84C" stroke-width="0.5"/>
+    <line x1="164" y1="36" x2="36" y2="164" stroke="#C9A84C" stroke-width="0.5"/>
+    <polygon points="100,15 115,85 185,100 115,115 100,185 85,115 15,100 85,85" fill="none" stroke="#C9A84C" stroke-width="0.5"/>
+  </svg>
+
+  <!-- ===== ENTRY SCREEN ===== -->
+  <div id="entry-screen">
+    <div class="entry-bg"></div>
+    <div class="entry-pattern"></div>
+
+    <!-- Corner Ornaments -->
+    <svg class="entry-corner tl" viewBox="0 0 120 120" fill="none">
+      <path d="M10 10 L10 60 Q10 90 40 90 L90 90" stroke="#C9A84C" stroke-width="1" fill="none"/>
+      <circle cx="10" cy="10" r="4" fill="#C9A84C"/>
+      <circle cx="90" cy="90" r="3" fill="none" stroke="#C9A84C" stroke-width="1"/>
+      <path d="M25 25 Q40 25 40 40 L40 75" stroke="#C9A84C" stroke-width="0.5" fill="none"/>
+    </svg>
+    <svg class="entry-corner tr" viewBox="0 0 120 120" fill="none">
+      <path d="M10 10 L10 60 Q10 90 40 90 L90 90" stroke="#C9A84C" stroke-width="1" fill="none"/>
+      <circle cx="10" cy="10" r="4" fill="#C9A84C"/>
+      <circle cx="90" cy="90" r="3" fill="none" stroke="#C9A84C" stroke-width="1"/>
+    </svg>
+    <svg class="entry-corner bl" viewBox="0 0 120 120" fill="none">
+      <path d="M10 10 L10 60 Q10 90 40 90 L90 90" stroke="#C9A84C" stroke-width="1" fill="none"/>
+      <circle cx="10" cy="10" r="4" fill="#C9A84C"/>
+      <circle cx="90" cy="90" r="3" fill="none" stroke="#C9A84C" stroke-width="1"/>
+    </svg>
+    <svg class="entry-corner br" viewBox="0 0 120 120" fill="none">
+      <path d="M10 10 L10 60 Q10 90 40 90 L90 90" stroke="#C9A84C" stroke-width="1" fill="none"/>
+      <circle cx="10" cy="10" r="4" fill="#C9A84C"/>
+    </svg>
+
+    <div class="entry-content">
+      <img src="ganesha.png" alt="Ganesha" style="width: 80px; height: 80px; margin: 0 auto 1.5rem; display: block;" data-aos="zoom-in" data-aos-duration="800" />
+      <p class="entry">Shubh Vivah</p>
+      <p class="entry-invite-text">Together with their families</p>
+      <div class="entry-names">
+        <em>Pranav</em>
+        <span class="entry-amp">& </span>
+        Aishwarya
+      </div>
+      <p class="entry-tagline">"Two families, one blessing, a lifetime of love…"</p>
+      <button class="entry-btn" onclick="openInvitation()">
+        <span>✦ &nbsp; Open Invitation</span>
+      </button>
+    </div>
+
+    <div class="entry-shimmer"></div>
+  </div>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div id="main-content">
+
+    <!-- NAV -->
+    <nav class="site-nav" id="site-nav">
+      <div class="nav-logo">P &amp; A</div>
+      <ul class="nav-links">
+        <li><a href="#details">Details</a></li>
+        <li><a href="#countdown">Countdown</a></li>
+        <li><a href="#location">Venue</a></li>
+        <!-- <li><a href="#rsvp">RSVP</a></li> -->
+      </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero">
+      <div data-aos="fade-down" data-aos-duration="800">
+        <p class="hero-shubh">🪔 Shubh Vivah</p>
+        <p class="hero-subtitle">Request the honour of your presence</p>
+      </div>
+
+      <div class="hero-arch" data-aos="zoom-in-up" data-aos-duration="1000" data-aos-delay="200">
+        <div class="hero-arch-frame">
+          <div class="hero-arch-ornament"></div>
+          <div class="hero-arch-inner">
+            <img
+              src="hero img1.png"
+              alt="Couple"
+              class="hero-couple-photo"
+            />
+          </div>
+        </div>
+        <div class="hero-arch-base">
+          <div class="hero-arch-pillar"></div>
+          <div class="hero-arch-pillar"></div>
+        </div>
+      </div>
+
+      <div data-aos="slide-up" data-aos-duration="900" data-aos-delay="400">
+        <div class="hero-names">
+          <span class="groom">Pranav</span>
+          <span class="amp">✦</span>
+          <span class="bride">Aishwarya</span>
+        </div>
+      </div>
+
+      <div data-aos="fade-up" data-aos-duration="800" data-aos-delay="600">
+        <div class="gold-divider"><div class="diamond"></div></div>
+        <p class="hero-quote">"Two hearts finding their way to each other — now forever, they begin as one."</p>
+      </div>
+    </section>
+
+    <!-- DETAILS -->
+    <section id="details">
+      <div style="text-align:center">
+        <p class="section-label" data-aos="fade-up">Save The Date</p>
+        <h2 class="section-title dark" data-aos="fade-up" data-aos-delay="100">Wedding Celebrations</h2>
+        <div class="gold-divider" data-aos="fade-up" data-aos-delay="150"><div class="diamond"></div></div>
+      </div>
+
+      <div class="details-container">
+        <div class="detail-card" data-aos="fade-up" data-aos-delay="0">
+          <span class="detail-icon">🗓️</span>
+          <p class="detail-label">Date</p>
+          <p class="detail-value">01 May 2026</p>
+          <p class="detail-sub">Friday — Auspicious Day</p>
+        </div>
+        <div class="detail-card" data-aos="fade-up" data-aos-delay="100">
+          <span class="detail-icon">📍</span>
+          <p class="detail-label">Venue</p>
+          <p class="detail-value">SHUBHANKAROTI MANGAL KARYALAY(DANDAGE)</p>
+          <p class="detail-sub">Rui, Ichaklakranji Kolhapur Road</p>
+        </div>
+        <div class="detail-card" data-aos="fade-up" data-aos-delay="200">
+          <span class="detail-icon">⏰</span>
+          <p class="detail-label">Time</p>
+          <p class="detail-value">Muhurt: 12:29 PM</p>
+          <p class="detail-sub">Lunch: 11:00 AM onwards</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COUNTDOWN -->
+    <section id="countdown">
+      <div class="countdown-geo"></div>
+      <p class="countdown-label" data-aos="fade-up">The Big Day Is Near</p>
+      <h2 class="countdown-title" data-aos="fade-up" data-aos-delay="100">"Every moment counts…"</h2>
+      <div class="countdown-grid" data-aos="zoom-in" data-aos-delay="200">
+        <div class="countdown-unit">
+          <span class="countdown-number" id="cd-days">00</span>
+          <p class="countdown-unit-label">Days</p>
+        </div>
+        <span class="countdown-sep">:</span>
+        <div class="countdown-unit">
+          <span class="countdown-number" id="cd-hours">00</span>
+          <p class="countdown-unit-label">Hours</p>
+        </div>
+        <span class="countdown-sep">:</span>
+        <div class="countdown-unit">
+          <span class="countdown-number" id="cd-minutes">00</span>
+          <p class="countdown-unit-label">Minutes</p>
+        </div>
+        <span class="countdown-sep">:</span>
+        <div class="countdown-unit">
+          <span class="countdown-number" id="cd-seconds">00</span>
+          <p class="countdown-unit-label">Seconds</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOCATION -->
+    <section id="location">
+      <div style="text-align:center">
+        <p class="section-label" data-aos="fade-up">Find Us</p>
+        <h2 class="section-title light" data-aos="fade-up" data-aos-delay="100">Venue & Directions</h2>
+        <div class="gold-divider" data-aos="fade-up" data-aos-delay="150"><div class="diamond"></div></div>
+      </div>
+      <div class="location-container">
+        <div class="location-info" data-aos="fade-right">
+          <p class="location-address">SHUBHANKAROTI MANGAL KARYALAY (DANDAGE),<br>Lakshmi, MIDC Road,<br>Ichalkaranji, Maharashtra 416115</p>
+
+          <div class="location-detail-row">
+            <span>📅</span>
+            <span>Saturday, 28 November 2025</span>
+          </div>
+          <div class="location-detail-row">
+            <span>⏰</span>
+            <span>Ceremony begins at 8:00 PM</span>
+          </div>
+          <div class="location-detail-row">
+            <span>🚗</span>
+            <span>Parking is available nearby</span>
+          </div>
+          <!-- <div class="location-detail-row">
+            <span>🚇</span>
+            <span>Ichalkaranji Railway Station – 15 min drive</span>
+          </div> -->
+
+          <div class="qr-block">
+            <img src="QR.jpeg" alt="Scan to open venue location" class="qr-code" />
+            <p class="qr-note">Scan to open the venue address on your phone</p>
+          </div>
+
+          <a
+            href="https://maps.app.goo.gl/yEV58rh6svbUKBND6"
+            target="_blank"
+            class="direction-btn"
+          >🗺️ &nbsp; Get Directions</a>
+        </div>
+
+        <!-- <div class="map-frame" data-aos="fade-left" data-aos-delay="100">
+          <iframe
+            src="https://www.google.com/maps?q=SHUBHANKAROTI+MANGAL+KARYALAY+%28DANDAGE%29%2C+Lakshmi%2C+MIDC+Rd%2C+Ichalkaranji%2C+Maharashtra+416115&output=embed"
+            allowfullscreen=""
+            loading="lazy"
+            title="Venue Map"
+          ></iframe>
+        </div>
+      </div> -->
+    </section>
+
+    <!-- CLOSING -->
+    <section id="closing">
+      <svg class="closing-mandala" viewBox="0 0 200 200" fill="none">
+        <circle cx="100" cy="100" r="95" stroke="#C9A84C" stroke-width="0.5"/>
+        <circle cx="100" cy="100" r="75" stroke="#C9A84C" stroke-width="0.5"/>
+        <circle cx="100" cy="100" r="55" stroke="#C9A84C" stroke-width="0.5"/>
+        <circle cx="100" cy="100" r="35" stroke="#C9A84C" stroke-width="0.5"/>
+        <circle cx="100" cy="100" r="15" stroke="#C9A84C" stroke-width="0.5"/>
+        <line x1="5" y1="100" x2="195" y2="100" stroke="#C9A84C" stroke-width="0.5"/>
+        <line x1="100" y1="5" x2="100" y2="195" stroke="#C9A84C" stroke-width="0.5"/>
+        <line x1="33" y1="33" x2="167" y2="167" stroke="#C9A84C" stroke-width="0.5"/>
+        <line x1="167" y1="33" x2="33" y2="167" stroke="#C9A84C" stroke-width="0.5"/>
+        <polygon points="100,10 115,85 190,100 115,115 100,190 85,115 10,100 85,85" fill="none" stroke="#C9A84C" stroke-width="0.5"/>
+      </svg>
+
+      <p class="section-label" style="position:relative" data-aos="fade-up">With Love & Blessings</p>
+      <div class="gold-divider" data-aos="fade-up" data-aos-delay="100"><div class="diamond"></div></div>
+      <h2 class="closing-message" style="position:relative; margin-top:1.5rem" data-aos="fade-up" data-aos-delay="200">
+        We would be <em>honoured</em><br>by your presence & blessings
+      </h2>
+      <p class="closing-sub" style="position:relative" data-aos="fade-up" data-aos-delay="300">
+        Together with our families — Aishwarya & Pranav
+      </p>
+
+      <div class="gold-divider" data-aos="fade-up" data-aos-delay="350"><div class="diamond"></div></div>
+
+      <!-- <div class="closing-families" data-aos="fade-up" data-aos-delay="400">
+        <div class="family-block">
+          <p class="family-label">Bride's Family</p>
+          <p class="family-name">Shingare Parivar</p>
+          <p class="family-desc">Mr. Arun & Mrs. Ranjna Shingare<br>Rendal, Maharashtra</p>
+        </div>
+        <div class="family-block" data-aos="zoom-in" data-aos-delay="450">
+          <div style="font-size: 2rem; opacity: 0.4; color: var(--gold)">🪔</div>
+        </div>
+        <div class="family-block">
+          <p class="family-label">Groom's Family</p>
+          <p class="family-name">Kamble Parivar</p>
+          <p class="family-desc">Mr. Satish & Mrs. Vaishali Kamble<br>Ichalkaranji, Maharashtra</p>
+        </div>
+      </div> -->
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <p>🌸 &nbsp; With Love — Pranav & Aishwarya Wedding 2026 &nbsp; 🌸</p>
+    </footer>
+
+  </div><!-- /main-content -->
+
+  <!-- Music Button -->
+  <button id="music-btn" title="Toggle Music" onclick="toggleMusic()">
+    <div class="music-pulse"></div>
+    <div class="music-pulse delay"></div>
+    <span id="music-icon">♪</span>
+  </button>
+
+  <!-- Hidden audio (royalty-free instrumental) -->
+  <audio id="bg-music" loop>
+    <source src="sahilmadan-wedding-invitation-421393.mp3" type="audio/mp3">
+  </audio>
+
+  <!-- AOS -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    // ===== INIT AOS =====
+    AOS.init({ duration: 800, once: true, offset: 60 });
+
+    // ===== PETALS =====
+    (function spawnPetals() {
+      const container = document.getElementById('petals');
+      for (let i = 0; i < 18; i++) {
+        const p = document.createElement('div');
+        p.className = 'petal';
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.animationDuration = (8 + Math.random() * 12) + 's';
+        p.style.animationDelay = (Math.random() * 15) + 's';
+        p.style.width = (5 + Math.random() * 8) + 'px';
+        p.style.height = (9 + Math.random() * 10) + 'px';
+        p.style.opacity = 0.3 + Math.random() * 0.4;
+        container.appendChild(p);
+      }
+    })();
+
+    // ===== OPEN INVITATION =====
+    function openInvitation() {
+      const entry = document.getElementById('entry-screen');
+      const main = document.getElementById('main-content');
+      const nav = document.getElementById('site-nav');
+      const musicBtn = document.getElementById('music-btn');
+
+      entry.classList.add('open');
+      setTimeout(() => {
+        main.classList.add('visible');
+        nav.classList.add('visible');
+        musicBtn.classList.add('shown');
+        // Auto-play music
+        const audio = document.getElementById('bg-music');
+        audio.volume = 0.35;
+        audio.play().catch(() => {});
+      }, 600);
+    }
+
+    // ===== COUNTDOWN =====
+    (function initCountdown() {
+      const weddingDate = new Date('2026-05-01T12:29:00');
+      function tick() {
+        const now = new Date();
+        const diff = weddingDate - now;
+        if (diff <= 0) {
+          document.getElementById('cd-days').textContent = '00';
+          document.getElementById('cd-hours').textContent = '00';
+          document.getElementById('cd-minutes').textContent = '00';
+          document.getElementById('cd-seconds').textContent = '00';
+          return;
+        }
+        const d = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        document.getElementById('cd-days').textContent = String(d).padStart(2, '0');
+        document.getElementById('cd-hours').textContent = String(h).padStart(2, '0');
+        document.getElementById('cd-minutes').textContent = String(m).padStart(2, '0');
+        document.getElementById('cd-seconds').textContent = String(s).padStart(2, '0');
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
+
+    // ===== MUSIC =====
+    let musicPlaying = true;
+    function toggleMusic() {
+      const audio = document.getElementById('bg-music');
+      const icon = document.getElementById('music-icon');
+      if (musicPlaying) {
+        audio.pause();
+        icon.textContent = '♫';
+        musicPlaying = false;
+      } else {
+        audio.play();
+        icon.textContent = '♪';
+        musicPlaying = true;
+      }
+    }
+
+    // ===== NAV SCROLL =====
+    window.addEventListener('scroll', () => {
+      // Parallax on hero arch - removed to prevent weird scrolling effect
+      /*
+      const hero = document.getElementById('hero');
+      if (hero) {
+        const scrolled = window.pageYOffset;
+        const arch = hero.querySelector('.hero-arch');
+        if (arch) arch.style.transform = `translateY(${scrolled * 0.1}px)`;
+      }
+      */
+    });
+  </script>
+</body>
+</html>
